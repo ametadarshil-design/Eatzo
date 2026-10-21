@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -48,7 +50,6 @@ const Restaurants = () => {
     },
   ];
 
-  // Filter + Search
   let filtered = restaurantData.filter((res) => {
     return (
       res.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -56,7 +57,6 @@ const Restaurants = () => {
     );
   });
 
-  // Sorting
   if (sort === "rating") {
     filtered.sort((a, b) => b.rating - a.rating);
   } else if (sort === "deliveryTime") {
@@ -72,7 +72,6 @@ const Restaurants = () => {
       <Navbar />
 
       <main className="restaurants-page">
-        {/* Hero */}
         <section className="page-hero small-hero">
           <div className="container">
             <h1>Explore Restaurants</h1>
@@ -81,11 +80,10 @@ const Restaurants = () => {
         </section>
 
         <section className="container section-gap">
-          {/* Filters */}
           <div className="filter-bar">
             <input
               type="text"
-              placeholder="Search restaurant or cuisine..."
+              placeholder="Search restaurant..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -94,45 +92,42 @@ const Restaurants = () => {
               <option value="">All Cuisines</option>
               <option value="Pizza">Pizza</option>
               <option value="Burger">Burger</option>
-              <option value="Biryani">Biryani</option>
               <option value="Momos">Momos</option>
               <option value="North Indian">North Indian</option>
-              <option value="Chinese">Chinese</option>
             </select>
 
             <select onChange={(e) => setSort(e.target.value)}>
               <option value="">Sort By</option>
               <option value="rating">Rating</option>
               <option value="deliveryTime">Delivery Time</option>
-              <option value="costLowHigh">Cost: Low to High</option>
-              <option value="costHighLow">Cost: High to Low</option>
+              <option value="costLowHigh">Cost Low-High</option>
+              <option value="costHighLow">Cost High-Low</option>
             </select>
           </div>
 
-          {/* Restaurant List */}
           <div className="restaurant-list-grid">
-            {filtered.length === 0 ? (
-              <p>No restaurants found</p>
-            ) : (
-              filtered.map((res, index) => (
-                <div className="restaurant-card card" key={index}>
-                  <img src={res.img} alt={res.name} />
+            {filtered.map((res, index) => (
+              <div className="restaurant-card card" key={index}>
+                <img src={res.img} alt={res.name} />
 
-                  <div className="restaurant-info">
-                    <h3>{res.name}</h3>
-                    <p>{res.cuisine}</p>
-                    <span>
-                      ⭐ {res.rating} | {res.deliveryTime} mins
-                    </span>
-                    <p>₹{res.cost} for two</p>
+                <div className="restaurant-info">
+                  <h3>{res.name}</h3>
+                  <p>{res.cuisine}</p>
+                  <span>
+                    ⭐ {res.rating} | {res.deliveryTime} mins
+                  </span>
 
-                    <a href="/restaurant" className="btn small-btn">
-                      View Menu
-                    </a>
-                  </div>
+                  <p>₹{res.cost} for two</p>
+
+                  <Link
+                    to={`/restaurant/${index}`}
+                    className="btn small-btn"
+                  >
+                    View Menu
+                  </Link>
                 </div>
-              ))
-            )}
+              </div>
+            ))}
           </div>
         </section>
       </main>

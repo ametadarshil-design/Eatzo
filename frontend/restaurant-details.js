@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -9,7 +10,6 @@ import "../css/restaurant-details.css";
 import "../css/responsive.css";
 
 const RestaurantDetails = () => {
-  // Static data (later replace with API)
   const restaurant = {
     name: "Dominos",
     cuisine: "Pizza, Fast Food",
@@ -46,23 +46,24 @@ const RestaurantDetails = () => {
     },
   ];
 
-  // Add to cart
   const addToCart = (item) => {
-    const existing = cart.find((i) => i.name === item.name);
+    setCart((prevCart) => {
+      const existing = prevCart.find((i) => i.name === item.name);
+      let updatedCart;
 
-    let updatedCart;
-    if (existing) {
-      updatedCart = cart.map((i) =>
-        i.name === item.name
-          ? { ...i, quantity: i.quantity + 1 }
-          : i
-      );
-    } else {
-      updatedCart = [...cart, { ...item, quantity: 1 }];
-    }
+      if (existing) {
+        updatedCart = prevCart.map((i) =>
+          i.name === item.name
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
+      } else {
+        updatedCart = [...prevCart, { ...item, quantity: 1 }];
+      }
 
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
 
     alert(`${item.name} added to cart 🛒`);
   };
@@ -72,17 +73,14 @@ const RestaurantDetails = () => {
       <Navbar />
 
       <main>
-        {/* Banner */}
         <section className="restaurant-banner">
           <div className="container restaurant-banner-content">
             <div className="restaurant-banner-image">
               <img src={restaurant.image} alt={restaurant.name} />
             </div>
-
             <div className="restaurant-banner-text">
               <h1>{restaurant.name}</h1>
               <p>{restaurant.cuisine}</p>
-
               <div className="restaurant-stats">
                 <span>{restaurant.rating}</span>
                 <span>{restaurant.delivery}</span>
@@ -92,7 +90,6 @@ const RestaurantDetails = () => {
           </div>
         </section>
 
-        {/* Menu */}
         <section className="container section-gap">
           <div className="menu-header">
             <h2>Menu</h2>
@@ -106,7 +103,6 @@ const RestaurantDetails = () => {
                 <div className="food-info">
                   <h3>{item.name}</h3>
                   <strong>₹{item.price}</strong>
-
                   <button
                     className="btn small-btn"
                     onClick={() => addToCart(item)}
