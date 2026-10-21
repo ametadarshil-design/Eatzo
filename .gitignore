@@ -48,3 +48,11 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+node_modules/
+**/node_modules/
+.env
+**/.env
+.env.*
+**/.env.*
+build/
+**/build/
